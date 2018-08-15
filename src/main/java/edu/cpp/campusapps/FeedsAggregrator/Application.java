@@ -1,30 +1,38 @@
 package edu.cpp.campusapps.FeedsAggregrator;
 
+import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
-import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.SyndFeedOutput;
-import com.rometools.rome.io.XmlReader;
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@SpringBootApplication
+@EnableCaching
 @RestController
-@EnableAutoConfiguration
 public class Application {
 
-    private ArrayList<String> feeds;
+    private ArrayList<String> feeds = new ArrayList<>();
 
-    Application() {
-        this.feeds = new ArrayList<>();
+    private Logger logger = LoggerFactory.getLogger(Application.class);
 
+    @Autowired
+    private FeedService service;
+
+    @PostConstruct
+    public void init() {
         this.feeds.add("https://polycentric.cpp.edu/tag/student-and-campus-life/feed/");
-        this.feeds.add("http://polycentric.cpp.edu/tag/student-success/feed/");
+        this.feeds.add("https://polycentric.cpp.edu/tag/student-success/feed/");
     }
 
     @RequestMapping("/")
@@ -41,13 +49,14 @@ public class Application {
         feed.setEntries(entries);
 
         for(String feedUrl : feeds) {
-            URL inputUrl = new URL(feedUrl);
+            List<SyndEntry> feedEntries = this.service.fetch(feedUrl);
 
-            SyndFeedInput input = new SyndFeedInput();
-            SyndFeed inFeed = input.build(new XmlReader(inputUrl));
+            entries.addAll(feedEntries);
 
-            entries.addAll(inFeed.getEntries());
+            Collections.sort(entries, new SortByPubDate());
         }
+
+        Collections.reverse(entries);
 
         SyndFeedOutput output = new SyndFeedOutput();
         return output.outputString(feed);
