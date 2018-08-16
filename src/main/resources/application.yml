@@ -1,0 +1,6 @@
+feeds:
+  general:
+    - https://polycentric.cpp.edu/tag/student-and-campus-life/feed/
+    - https://polycentric.cpp.edu/tag/student-success/feed/
+  cba:
+    - https://polycentric.cpp.edu/tag/college-of-business-administration/feed/

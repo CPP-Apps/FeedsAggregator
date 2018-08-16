@@ -7,7 +7,6 @@ import com.rometools.rome.io.SyndFeedOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
-    private ArrayList<String> feeds = new ArrayList<>();
+    private final Logger logger = LoggerFactory.getLogger(Application.class);
 
-    private Logger logger = LoggerFactory.getLogger(Application.class);
+    @Autowired
+    private FeedsProperties fp;
 
     @Autowired
     private FeedService service;
-
-    @PostConstruct
-    public void init() {
-        this.feeds.add("https://polycentric.cpp.edu/tag/student-and-campus-life/feed/");
-        this.feeds.add("https://polycentric.cpp.edu/tag/student-success/feed/");
-    }
 
     @RequestMapping("/")
     public String index() throws Exception {
@@ -48,12 +42,14 @@ public class Application {
         List entries = new ArrayList();
         feed.setEntries(entries);
 
-        for(String feedUrl : feeds) {
-            List<SyndEntry> feedEntries = this.service.fetch(feedUrl);
+        for(String key : fp.getFeeds().keySet()) {
+            for (String feedUrl : fp.getFeeds().get(key)) {
+                List<SyndEntry> feedEntries = this.service.fetch(feedUrl);
 
-            entries.addAll(feedEntries);
+                entries.addAll(feedEntries);
 
-            Collections.sort(entries, new SortByPubDate());
+                Collections.sort(entries, new SortByPubDate());
+            }
         }
 
         Collections.reverse(entries);
