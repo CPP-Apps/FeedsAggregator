@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "aggregratedFeed")
-public class FeedProperties {
+public class AggregatedFeedProperties {
 
     private String type;
     private String title;

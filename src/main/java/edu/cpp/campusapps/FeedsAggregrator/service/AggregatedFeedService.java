@@ -1,39 +1,34 @@
-package edu.cpp.campusapps.FeedsAggregrator.controller;
+package edu.cpp.campusapps.FeedsAggregrator.service;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
-import com.rometools.rome.io.SyndFeedOutput;
 import edu.cpp.campusapps.FeedsAggregrator.Application;
-import edu.cpp.campusapps.FeedsAggregrator.util.FeedProperties;
+import edu.cpp.campusapps.FeedsAggregrator.util.AggregatedFeedProperties;
 import edu.cpp.campusapps.FeedsAggregrator.util.FeedsProperties;
 import edu.cpp.campusapps.FeedsAggregrator.util.SortByPubDate;
-import edu.cpp.campusapps.FeedsAggregrator.service.FeedService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-@RestController
-public class AggregratedFeedController {
+@Service
+public class AggregatedFeedService {
 
-    private final Logger logger = LoggerFactory.getLogger(Application.class);
+    private Logger logger = LoggerFactory.getLogger(Application.class);
 
     @Autowired
-    private FeedProperties feedProperties;
+    private AggregatedFeedProperties aggregatedFeedProperties;
 
     @Autowired
-    private FeedsProperties fp;
+    private FeedsProperties feedsProperties;
 
     @Autowired
     private FeedService service;
@@ -41,29 +36,30 @@ public class AggregratedFeedController {
     @Value("${maxAge:4}")
     private long maxAge;
 
-    @RequestMapping("/")
-    public String getAggregratedFeed(HttpServletRequest request) throws Exception {
-        String categoriesParameter = request.getParameter("categories");
-
+    public SyndFeed aggregateFeeds(String strCategories) throws Exception {
         List<String> categories = new ArrayList<>();
 
         categories.add("general");
 
-        if (categoriesParameter != null) {
-            for (String category : categoriesParameter.split(",")) {
-                if (fp.getFeeds().containsKey(category)) {
+        if (strCategories != null) {
+            for (String category : strCategories.split(",")) {
+                if (feedsProperties.getFeeds().containsKey(category)) {
                     categories.add(category);
                 }
             }
         }
 
+        return this.aggregateFeeds(categories);
+    }
+
+    public SyndFeed aggregateFeeds(List<String> categories) throws Exception {
         SyndFeed feed = new SyndFeedImpl();
 
-        feed.setFeedType(this.feedProperties.getType());
-        feed.setTitle(this.feedProperties.getTitle());
-        feed.setDescription(this.feedProperties.getDescription());
-        feed.setAuthor(this.feedProperties.getAuthor());
-        feed.setLink(this.feedProperties.getLink());
+        feed.setFeedType(this.aggregatedFeedProperties.getType());
+        feed.setTitle(this.aggregatedFeedProperties.getTitle());
+        feed.setDescription(this.aggregatedFeedProperties.getDescription());
+        feed.setAuthor(this.aggregatedFeedProperties.getAuthor());
+        feed.setLink(this.aggregatedFeedProperties.getLink());
 
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         feed.setEntries(entries);
@@ -77,7 +73,7 @@ public class AggregratedFeedController {
                                 .toInstant());
 
         for (String category : categories) {
-            List<String> feedUrls = fp.getFeeds().get(category);
+            List<String> feedUrls = feedsProperties.getFeeds().get(category);
 
             for (String feedUrl : feedUrls) {
                 List<SyndEntry> feedEntries = this.service.fetch(feedUrl);
@@ -112,8 +108,6 @@ public class AggregratedFeedController {
 
         logger.info(entries.size() + " entries");
 
-        SyndFeedOutput output = new SyndFeedOutput();
-        return output.outputString(feed);
+        return feed;
     }
-
 }
