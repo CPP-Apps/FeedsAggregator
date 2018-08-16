@@ -1,4 +1,4 @@
-package edu.cpp.campusapps.FeedsAggregrator.util;
+package edu.cpp.campusapps.FeedsAggregator.util;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import java.util.Comparator;

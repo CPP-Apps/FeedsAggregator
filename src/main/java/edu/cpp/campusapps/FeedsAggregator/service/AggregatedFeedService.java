@@ -1,12 +1,11 @@
-package edu.cpp.campusapps.FeedsAggregrator.service;
+package edu.cpp.campusapps.FeedsAggregator.service;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
-import edu.cpp.campusapps.FeedsAggregrator.Application;
-import edu.cpp.campusapps.FeedsAggregrator.util.AggregatedFeedProperties;
-import edu.cpp.campusapps.FeedsAggregrator.util.FeedsProperties;
-import edu.cpp.campusapps.FeedsAggregrator.util.SortByPubDate;
+import edu.cpp.campusapps.FeedsAggregator.util.AggregatedFeedProperties;
+import edu.cpp.campusapps.FeedsAggregator.util.FeedsProperties;
+import edu.cpp.campusapps.FeedsAggregator.util.SortByPubDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AggregatedFeedService {
 
-    private Logger logger = LoggerFactory.getLogger(Application.class);
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private AggregatedFeedProperties aggregatedFeedProperties;
