@@ -1,4 +1,4 @@
-package edu.cpp.campusapps.FeedsAggregrator;
+package edu.cpp.campusapps.FeedsAggregrator.util;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

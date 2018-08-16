@@ -24,7 +24,7 @@ feeds:
     - https://polycentric.cpp.edu/tag/asi/feed/
     - https://polycentric.cpp.edu/tag/associated-students-inc/feed/
   ag:
-    - https://polycentric.cpp.edu/tag/college-of-agriculture/
+    - https://polycentric.cpp.edu/tag/college-of-agriculture/feed/
     - https://polycentric.cpp.edu/tag/don-b-huntley-college-of-agriculture/feed/
   cba:
     - https://polycentric.cpp.edu/tag/college-of-business-administration/feed/
@@ -34,7 +34,7 @@ feeds:
     - https://polycentric.cpp.edu/tag/college-of-education-integrative-studies/feed/
     - https://polycentric.cpp.edu/tag/college-of-education-and-integrative-studies/feed/
   egr:
-    - https://polycentric.cpp.edu/tag/engineering/feed
+    - https://polycentric.cpp.edu/tag/engineering/feed/
     - https://polycentric.cpp.edu/tag/college-of-engineering/feed/
   env:
     - https://polycentric.cpp.edu/tag/college-of-environmental-design/feed/

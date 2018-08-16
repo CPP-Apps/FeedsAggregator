@@ -1,4 +1,4 @@
-package edu.cpp.campusapps.FeedsAggregrator;
+package edu.cpp.campusapps.FeedsAggregrator.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
