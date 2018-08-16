@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,21 @@ public class Application {
     private long maxAge;
 
     @RequestMapping("/")
-    public String index() throws Exception {
+    public String index(HttpServletRequest request) throws Exception {
+        String categoriesParameter = request.getParameter("categories");
+
+        List<String> categories = new ArrayList<>();
+
+        categories.add("general");
+
+        if (categoriesParameter != null) {
+            for (String category : categoriesParameter.split(",")) {
+                if (fp.getFeeds().containsKey(category)) {
+                    categories.add(category);
+                }
+            }
+        }
+
         SyndFeed feed = new SyndFeedImpl();
 
         feed.setFeedType(this.feedProperties.getType());
@@ -60,8 +75,10 @@ public class Application {
                                 .atZone(ZoneId.systemDefault())
                                 .toInstant());
 
-        for (String key : fp.getFeeds().keySet()) {
-            for (String feedUrl : fp.getFeeds().get(key)) {
+        for (String category : categories) {
+            List<String> feedUrls = fp.getFeeds().get(category);
+
+            for (String feedUrl : feedUrls) {
                 List<SyndEntry> feedEntries = this.service.fetch(feedUrl);
 
                 for (SyndEntry entry : feedEntries) {

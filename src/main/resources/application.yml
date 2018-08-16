@@ -10,16 +10,42 @@ maxAge: 4
 
 feeds:
   general:
-  - https://polycentric.cpp.edu/tag/student-and-campus-life/feed/
-  - https://polycentric.cpp.edu/tag/student-success/feed/
-  - https://polycentric.cpp.edu/tag/college-rankings/feed/
-  - https://polycentric.cpp.edu/tag/campus-construction/feed/
-  - https://polycentric.cpp.edu/tag/tuition/feed/
-  - https://polycentric.cpp.edu/tag/safety-alert/feed/
-  - https://polycentric.cpp.edu/tag/university-news/feed/
-  - https://polycentric.cpp.edu/tag/students/feed/
-  - https://polycentric.cpp.edu/tag/campus-safety/feed/
-  - https://polycentric.cpp.edu/tag/university-police/feed/
-  - https://polycentric.cpp.edu/tag/bronco-advising-center/feed/
-  - https://polycentric.cpp.edu/tag/asi/feed/
-  - https://polycentric.cpp.edu/tag/associated-students-inc/feed/
+    - https://polycentric.cpp.edu/tag/student-and-campus-life/feed/
+    - https://polycentric.cpp.edu/tag/student-success/feed/
+    - https://polycentric.cpp.edu/tag/college-rankings/feed/
+    - https://polycentric.cpp.edu/tag/campus-construction/feed/
+    - https://polycentric.cpp.edu/tag/tuition/feed/
+    - https://polycentric.cpp.edu/tag/safety-alert/feed/
+    - https://polycentric.cpp.edu/tag/university-news/feed/
+    - https://polycentric.cpp.edu/tag/students/feed/
+    - https://polycentric.cpp.edu/tag/campus-safety/feed/
+    - https://polycentric.cpp.edu/tag/university-police/feed/
+    - https://polycentric.cpp.edu/tag/bronco-advising-center/feed/
+    - https://polycentric.cpp.edu/tag/asi/feed/
+    - https://polycentric.cpp.edu/tag/associated-students-inc/feed/
+  ag:
+    - https://polycentric.cpp.edu/tag/college-of-agriculture/
+    - https://polycentric.cpp.edu/tag/don-b-huntley-college-of-agriculture/feed/
+  cba:
+    - https://polycentric.cpp.edu/tag/college-of-business-administration/feed/
+    - https://polycentric.cpp.edu/tag/cba/feed/
+  ceis:
+    - https://polycentric.cpp.edu/tag/ceis/feed/
+    - https://polycentric.cpp.edu/tag/college-of-education-integrative-studies/feed/
+    - https://polycentric.cpp.edu/tag/college-of-education-and-integrative-studies/feed/
+  egr:
+    - https://polycentric.cpp.edu/tag/engineering/feed
+    - https://polycentric.cpp.edu/tag/college-of-engineering/feed/
+  env:
+    - https://polycentric.cpp.edu/tag/college-of-environmental-design/feed/
+  collins:
+    - https://polycentric.cpp.edu/tag/the-collins-college/feed/
+    - https://polycentric.cpp.edu/tag/collins-college-of-hospitality-management/feed/
+  class:
+    - https://polycentric.cpp.edu/tag/college-of-letters/feed/
+    - https://polycentric.cpp.edu/tag/college-of-letters-arts-and-social-sciences/feed/
+    - https://polycentric.cpp.edu/tag/college-of-letters-arts-social-sciences/feed/
+  sci:
+    - https://polycentric.cpp.edu/tag/science/feed/
+  ceu:
+    - https://polycentric.cpp.edu/tag/college-of-the-extended-university/feed/
