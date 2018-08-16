@@ -9,5 +9,4 @@ public class SortByPubDate implements Comparator<SyndEntry> {
     public int compare(SyndEntry syndEntry, SyndEntry t1) {
         return syndEntry.getPublishedDate().compareTo(t1.getPublishedDate());
     }
-
 }

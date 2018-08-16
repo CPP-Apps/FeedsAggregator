@@ -15,5 +15,4 @@ public class FeedsProperties {
     public Map<String, ArrayList<String>> getFeeds() {
         return this.feeds;
     }
-
 }

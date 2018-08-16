@@ -30,5 +30,4 @@ public class FeedService {
 
         return inFeed.getEntries();
     }
-
 }

@@ -4,12 +4,16 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
 import com.rometools.rome.io.SyndFeedOutput;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -32,6 +36,9 @@ public class Application {
     @Autowired
     private FeedService service;
 
+    @Value("${maxAge:4}")
+    private long maxAge;
+
     @RequestMapping("/")
     public String index() throws Exception {
         SyndFeed feed = new SyndFeedImpl();
@@ -42,14 +49,42 @@ public class Application {
         feed.setAuthor(this.feedProperties.getAuthor());
         feed.setLink(this.feedProperties.getLink());
 
-        List entries = new ArrayList();
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
         feed.setEntries(entries);
 
-        for(String key : fp.getFeeds().keySet()) {
+        // https://stackoverflow.com/a/23885950
+        Date cutoffDate =
+                Date.from(
+                        LocalDateTime.now()
+                                .minusWeeks(maxAge)
+                                .atZone(ZoneId.systemDefault())
+                                .toInstant());
+
+        for (String key : fp.getFeeds().keySet()) {
             for (String feedUrl : fp.getFeeds().get(key)) {
                 List<SyndEntry> feedEntries = this.service.fetch(feedUrl);
 
-                entries.addAll(feedEntries);
+                for (SyndEntry entry : feedEntries) {
+                    boolean addEntry = true;
+
+                    if (entry.getPublishedDate().before(cutoffDate)) {
+                        continue;
+                    }
+
+                    for (SyndEntry existingEntry : entries) {
+                        if (existingEntry.getUri().equals(entry.getUri())) {
+                            addEntry = false;
+
+                            logger.debug(entry.getUri() + " exists. Skipping");
+
+                            break;
+                        }
+                    }
+
+                    if (addEntry) {
+                        entries.add(entry);
+                    }
+                }
 
                 Collections.sort(entries, new SortByPubDate());
             }
