@@ -1,3 +1,10 @@
+aggregratedFeed:
+  type: rss_2.0
+  title: Personalized Feed
+  description: Personalized feed to use in MyCPP
+  author: Various Authors
+  link: https://my.cpp.edu
+
 feeds:
   general:
     - https://polycentric.cpp.edu/tag/student-and-campus-life/feed/

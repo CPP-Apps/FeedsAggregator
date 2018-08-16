@@ -24,6 +24,9 @@ public class Application {
     private final Logger logger = LoggerFactory.getLogger(Application.class);
 
     @Autowired
+    private FeedProperties feedProperties;
+
+    @Autowired
     private FeedsProperties fp;
 
     @Autowired
@@ -33,11 +36,11 @@ public class Application {
     public String index() throws Exception {
         SyndFeed feed = new SyndFeedImpl();
 
-        feed.setFeedType("rss_2.0");
-        feed.setTitle("Aggregated Feed");
-        feed.setDescription("Personalized Aggregated Feed");
-        feed.setAuthor("Various Authors");
-        feed.setLink("https://my.cpp.edu");
+        feed.setFeedType(this.feedProperties.getType());
+        feed.setTitle(this.feedProperties.getTitle());
+        feed.setDescription(this.feedProperties.getDescription());
+        feed.setAuthor(this.feedProperties.getAuthor());
+        feed.setLink(this.feedProperties.getLink());
 
         List entries = new ArrayList();
         feed.setEntries(entries);
