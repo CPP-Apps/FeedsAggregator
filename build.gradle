@@ -27,3 +27,7 @@ dependencies {
 jar {
     enabled = true
 }
+
+war {
+    archiveName = project.getName() + '.war'
+}
