@@ -9,9 +9,9 @@
      | Specify a local property that sets up the logging directory
      +-->
     <property scope="local" name="LOG_DIR" value="build/logs" />
-    <if condition='isDefined("catalina.home")'>
+    <if condition='isDefined("catalina.base")'>
         <then>
-            <property scope="local" name="LOG_DIR" value="${catalina.home}/logs" />
+            <property scope="local" name="LOG_DIR" value="${catalina.base}/logs" />
         </then>
     </if>
 
