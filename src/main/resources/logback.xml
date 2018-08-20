@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <contextName>FeedsAggregator</contextName>
+
+    <!--
+     | Specify a local property that sets up the logging directory
+     +-->
+    <property scope="local" name="LOG_DIR" value="build/logs" />
+    <if condition='isDefined("catalina.home")'>
+        <then>
+            <property scope="local" name="LOG_DIR" value="${catalina.home}/logs" />
+        </then>
+    </if>
+
+    <appender name="LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+        <!--for further documentation-->
+        <File>${LOG_DIR}/${CONTEXT_NAME}.log</File>
+        <encoder>
+            <pattern>[%d{ISO8601}] %level [%thread] %logger - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${CONTEXT_NAME}.log.%d{yyyy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOG"/>
+    </root>
+
+    <!--
+    <logger name="edu.cpp.campusapps.FeedsAggregator" additivity="false" level="DEBUG">
+        <appender-ref ref="LOG"/>
+    </logger>
+    -->
+
+</configuration>
