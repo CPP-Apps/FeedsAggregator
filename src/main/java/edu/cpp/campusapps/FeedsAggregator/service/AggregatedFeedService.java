@@ -105,7 +105,7 @@ public class AggregatedFeedService {
 
         Collections.reverse(entries);
 
-        logger.info(entries.size() + " entries");
+        logger.debug(entries.size() + " entries");
 
         return feed;
     }
