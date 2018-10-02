@@ -19,7 +19,7 @@ public class AggregatedFeedController {
     @Autowired
     AggregatedFeedService service;
 
-    @RequestMapping("/")
+    @RequestMapping(name = "/", produces = "application/rss+xml")
     public String getAggregratedFeed(HttpServletRequest request) throws Exception {
         String categories = request.getParameter("categories");
 
