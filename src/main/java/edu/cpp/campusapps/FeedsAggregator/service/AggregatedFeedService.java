@@ -1,8 +1,6 @@
 package edu.cpp.campusapps.FeedsAggregator.service;
 
-import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.feed.synd.SyndFeedImpl;
+import com.rometools.rome.feed.synd.*;
 import edu.cpp.campusapps.FeedsAggregator.util.AggregatedFeedProperties;
 import edu.cpp.campusapps.FeedsAggregator.util.FeedsProperties;
 import edu.cpp.campusapps.FeedsAggregator.util.SortByPubDate;
@@ -12,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.activation.MimetypesFileTypeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,8 @@ public class AggregatedFeedService {
 
     @Value("${maxAge:4}")
     private long maxAge;
+
+    private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
     public SyndFeed aggregateFeeds(String strCategories) throws Exception {
         List<String> categories = new ArrayList<>();
@@ -95,6 +96,20 @@ public class AggregatedFeedService {
                     }
 
                     if (addEntry) {
+                        for (SyndEnclosure enclosure : entry.getEnclosures()) {
+                            if (enclosure.getType() != null && !enclosure.getType().isEmpty()) {
+                                continue;
+                            }
+
+                            // TODO: Improve file type checking
+                            String extension =
+                                    enclosure
+                                            .getUrl()
+                                            .substring(enclosure.getUrl().lastIndexOf("."));
+
+                            enclosure.setType(fileTypeMap.getContentType(extension));
+                        }
+
                         entries.add(entry);
                     }
                 }
