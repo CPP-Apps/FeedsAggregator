@@ -4,8 +4,13 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.List;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,13 +23,21 @@ public class FeedService {
 
     @Cacheable("rssFeeds")
     public List<SyndEntry> fetch(String url) throws Exception {
-        URL inputUrl = new URL(url);
-
-        SyndFeedInput input = new SyndFeedInput();
-
         this.logger.debug("Fetching " + url);
 
-        SyndFeed inFeed = input.build(new XmlReader(inputUrl));
+        SyndFeed inFeed;
+
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpUriRequest request = new HttpGet(url);
+
+            try (CloseableHttpResponse response = client.execute(request);
+                    InputStream stream = response.getEntity().getContent()) {
+
+                SyndFeedInput input = new SyndFeedInput();
+
+                inFeed = input.build(new XmlReader(stream));
+            }
+        }
 
         this.logger.debug("Feed fetched");
 
