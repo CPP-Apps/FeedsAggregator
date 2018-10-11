@@ -3,7 +3,6 @@ package edu.cpp.campusapps.FeedsAggregator.service;
 import com.rometools.rome.feed.synd.*;
 import edu.cpp.campusapps.FeedsAggregator.util.AggregatedFeedProperties;
 import edu.cpp.campusapps.FeedsAggregator.util.FeedsProperties;
-import edu.cpp.campusapps.FeedsAggregator.util.SortByPubDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -114,7 +113,12 @@ public class AggregatedFeedService {
                     }
                 }
 
-                Collections.sort(entries, new SortByPubDate());
+                // IntelliJ IDEA wants to replace this with a Comparator.comparing, but it's probably best to leave it
+                // as is for now
+                Collections.sort(
+                        entries,
+                        (SyndEntry e1, SyndEntry e2) ->
+                                e1.getPublishedDate().compareTo(e2.getPublishedDate()));
             }
         }
 
