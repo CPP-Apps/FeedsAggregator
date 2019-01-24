@@ -7,7 +7,6 @@ aggregratedFeed:
 
 # The oldest an article can be, in weeks
 maxAge: 4
-#portalBaseUrl: http://localhost:8080/uPortal
 
 categories:
   general:
