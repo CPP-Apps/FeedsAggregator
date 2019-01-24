@@ -43,7 +43,7 @@ public class AggregatedFeedService {
 
     private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
-    @Value("${portalBaseUrl:http://localhost:8080/uPortal")
+    @Value("${portalBaseUrl:http://localhost:8080/uPortal}")
     private String portalBaseUrl;
 
     public SyndFeed aggregateFeeeds(HttpServletRequest request) throws Exception {
@@ -86,6 +86,14 @@ public class AggregatedFeedService {
                     categories.add(categoryName);
                 }
             }
+        }
+
+        if(logger.isDebugEnabled()) {
+            final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            logger.debug("Determined the following categories for {}: ", auth.getPrincipal());
+
+            categories.forEach(category -> logger.debug("{}", category));
         }
 
         return this.aggregateFeeds(categories);

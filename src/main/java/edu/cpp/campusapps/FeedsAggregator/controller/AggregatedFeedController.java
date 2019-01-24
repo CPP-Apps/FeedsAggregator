@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @EnableCaching
+@RequestMapping("api")
 public class AggregatedFeedController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
