@@ -1,20 +1,28 @@
 package edu.cpp.campusapps.FeedsAggregator.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.rometools.rome.feed.synd.*;
+import edu.cpp.campusapps.FeedsAggregator.util.Category;
 import edu.cpp.campusapps.FeedsAggregator.util.AggregatedFeedProperties;
-import edu.cpp.campusapps.FeedsAggregator.util.FeedsProperties;
+import edu.cpp.campusapps.FeedsAggregator.util.CategoriesProperties;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class AggregatedFeedService {
@@ -25,7 +33,7 @@ public class AggregatedFeedService {
     private AggregatedFeedProperties aggregatedFeedProperties;
 
     @Autowired
-    private FeedsProperties feedsProperties;
+    private CategoriesProperties categoriesProperties;
 
     @Autowired
     private FeedService service;
@@ -35,6 +43,54 @@ public class AggregatedFeedService {
 
     private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
+    @Value("${portalBaseUrl:http://localhost:8080/uPortal")
+    private String portalBaseUrl;
+
+    public SyndFeed aggregateFeeeds(HttpServletRequest request) throws Exception {
+        String oidc = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, oidc);
+
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+
+        ResponseEntity<JsonNode> groupsApiResponse = restTemplate.exchange(portalBaseUrl + "/api/groups", HttpMethod.GET, entity, JsonNode.class);
+
+        JsonNode groupsNode = groupsApiResponse.getBody().get("groups");
+
+        List<String> groups = new ArrayList<>();
+
+        if (groupsNode.isArray()) {
+            for (JsonNode group : groupsNode) {
+                groups.add(group.get("name").textValue());
+            }
+        }
+
+        List<String> categories = new ArrayList<>();
+        categories.add("general");
+
+        Iterator it = categoriesProperties.getCategories().entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+
+            String categoryName = pair.getKey().toString();
+            Category category = (Category) pair.getValue();
+
+            for (String group : groups) {
+                boolean addCategory = category.getGroups().stream().anyMatch(requisiteGroup -> group.equals(requisiteGroup));
+
+                if (addCategory && !categories.contains(categoryName)) {
+                    categories.add(categoryName);
+                }
+            }
+        }
+
+        return this.aggregateFeeds(categories);
+    }
+
     public SyndFeed aggregateFeeds(String strCategories) throws Exception {
         List<String> categories = new ArrayList<>();
 
@@ -42,7 +98,7 @@ public class AggregatedFeedService {
 
         if (strCategories != null) {
             for (String category : strCategories.split(",")) {
-                if (feedsProperties.getFeeds().containsKey(category)) {
+                if (categoriesProperties.getCategories().containsKey(category)) {
                     categories.add(category);
                 }
             }
@@ -72,7 +128,7 @@ public class AggregatedFeedService {
                                 .toInstant());
 
         for (String category : categories) {
-            List<String> feedUrls = feedsProperties.getFeeds().get(category);
+            List<String> feedUrls = categoriesProperties.getCategories().get(category).getFeeds();
 
             for (String feedUrl : feedUrls) {
                 List<SyndEntry> feedEntries = this.service.fetch(feedUrl);

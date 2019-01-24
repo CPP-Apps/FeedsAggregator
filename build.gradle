@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.6'
+    compile 'org.jasig.portal:uPortal-soffit-renderer:5.4.0'
     runtime 'org.codehaus.janino:janino:3.0.8'
     compile 'com.rometools:rome:1.11.0'
 

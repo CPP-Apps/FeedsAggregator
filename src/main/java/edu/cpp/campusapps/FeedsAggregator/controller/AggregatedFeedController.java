@@ -19,12 +19,19 @@ public class AggregatedFeedController {
     @Autowired
     AggregatedFeedService service;
 
-    @RequestMapping(name = "/", produces = "application/rss+xml")
+    @RequestMapping(value = "/", produces = "application/rss+xml")
     public String getAggregratedFeed(HttpServletRequest request) throws Exception {
         String categories = request.getParameter("categories");
 
         SyndFeedOutput output = new SyndFeedOutput();
 
         return output.outputString(service.aggregateFeeds(categories));
+    }
+
+    @RequestMapping(value = "/personalized-feed", produces = "application/rss+xml")
+    public String getAggregratedFeedViaOIDC(HttpServletRequest request) throws Exception {
+        SyndFeedOutput output = new SyndFeedOutput();
+
+        return output.outputString(service.aggregateFeeeds(request));
     }
 }
