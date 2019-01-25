@@ -10,10 +10,8 @@ import org.springframework.context.annotation.PropertySources;
 @SpringBootApplication
 @PropertySources({
         @PropertySource(value = "classpath:feeds-aggregator.properties"),
-        @PropertySource(value = "classpath:feeds-aggregator.yml"),
         @PropertySource(value = "file:${portal.home}/global.properties", ignoreResourceNotFound = true),
         @PropertySource(value = "file:${portal.home}/feeds-aggregator.properties", ignoreResourceNotFound = true),
-        @PropertySource(value = "file:${portal.home}/feeds-aggregator.yml", ignoreResourceNotFound = true)
 })
 public class Application extends SpringBootServletInitializer {
 
