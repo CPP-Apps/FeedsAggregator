@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.PropertySources;
         @PropertySource(value = "file:${portal.home}/global.properties", ignoreResourceNotFound = true),
         @PropertySource(value = "file:${portal.home}/feeds-aggregator.properties", ignoreResourceNotFound = true),
 })
+@EnableCaching
 public class Application extends SpringBootServletInitializer {
 
     private static Class<Application> applicationClass = Application.class;

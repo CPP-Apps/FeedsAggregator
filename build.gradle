@@ -14,14 +14,16 @@ repositories {
 }
 
 dependencies {
+    compile 'com.rometools:rome:1.11.0'
+    compile "javax.cache:cache-api:1.0.0"
     compile 'org.apache.httpcomponents:httpclient:4.5.6'
     compile 'org.jasig.portal:uPortal-soffit-renderer:5.4.0'
-    runtime 'org.codehaus.janino:janino:3.0.8'
-    compile 'com.rometools:rome:1.11.0'
-
     compile 'org.springframework.boot:spring-boot-starter-cache'
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework.boot:spring-boot-starter-web'
+
+    runtime 'org.codehaus.janino:janino:3.0.8'
+    runtime 'org.ehcache:ehcache:3.6.3'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'

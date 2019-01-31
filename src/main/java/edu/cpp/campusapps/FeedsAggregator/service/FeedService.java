@@ -4,8 +4,6 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import java.io.InputStream;
-import java.util.List;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -13,15 +11,18 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import javax.cache.annotation.CacheResult;
+import java.io.InputStream;
+import java.util.List;
 
 @Service
 public class FeedService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Cacheable("rssFeeds")
+    @CacheResult(cacheName = "feeds")
     public List<SyndEntry> fetch(String url) throws Exception {
         this.logger.debug("Fetching " + url);
 
