@@ -2,13 +2,15 @@ package edu.cpp.campusapps.FeedsAggregator.controller;
 
 import com.rometools.rome.io.SyndFeedOutput;
 import edu.cpp.campusapps.FeedsAggregator.service.AggregatedFeedService;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -19,9 +21,9 @@ public class AggregatedFeedController {
     @Autowired
     AggregatedFeedService service;
 
-    @RequestMapping(value = "/", produces = "application/rss+xml")
+    @RequestMapping(value = "/aggregated-feed", produces = "application/rss+xml")
     public String getAggregratedFeed(HttpServletRequest request) throws Exception {
-        String categories = request.getParameter("categories");
+        List<String> categories = Arrays.asList(request.getParameter("categories").split(","));
 
         SyndFeedOutput output = new SyndFeedOutput();
 
@@ -29,9 +31,9 @@ public class AggregatedFeedController {
     }
 
     @RequestMapping(value = "/personalized-feed", produces = "application/rss+xml")
-    public String getAggregratedFeedViaOIDC(HttpServletRequest request) throws Exception {
+    public String getPersonalizedFeed(HttpServletRequest request) throws Exception {
         SyndFeedOutput output = new SyndFeedOutput();
 
-        return output.outputString(service.aggregateFeeeds(request));
+        return output.outputString(service.aggregateFeedsByGroups(request));
     }
 }

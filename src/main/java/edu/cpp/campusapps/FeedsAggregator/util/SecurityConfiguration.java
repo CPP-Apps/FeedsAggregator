@@ -53,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .addFilter(filter)
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/api/aggregated-feed**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/**").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/api/**").denyAll()

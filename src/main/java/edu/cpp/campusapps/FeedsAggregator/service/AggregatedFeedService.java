@@ -46,7 +46,11 @@ public class AggregatedFeedService {
     @Value("${portalBaseUrl:http://localhost:8080/uPortal}")
     private String portalBaseUrl;
 
-    public SyndFeed aggregateFeeeds(HttpServletRequest request) throws Exception {
+    /**
+     * aggregateFeedsByGroups determines the user's groups from uPortal and
+     * adds the appropriate feed categories for aggregation.
+     */
+    public SyndFeed aggregateFeedsByGroups(HttpServletRequest request) throws Exception {
         String oidc = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -124,7 +128,7 @@ public class AggregatedFeedService {
         feed.setAuthor(this.aggregatedFeedProperties.getAuthor());
         feed.setLink(this.aggregatedFeedProperties.getLink());
 
-        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        List<SyndEntry> entries = new ArrayList<>();
         feed.setEntries(entries);
 
         // https://stackoverflow.com/a/23885950
