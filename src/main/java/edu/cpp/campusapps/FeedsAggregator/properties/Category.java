@@ -1,4 +1,4 @@
-package edu.cpp.campusapps.FeedsAggregator.util;
+package edu.cpp.campusapps.FeedsAggregator.properties;
 
 import java.util.ArrayList;
 import java.util.List;

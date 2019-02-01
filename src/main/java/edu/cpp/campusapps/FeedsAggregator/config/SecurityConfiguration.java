@@ -1,4 +1,4 @@
-package edu.cpp.campusapps.FeedsAggregator.util;
+package edu.cpp.campusapps.FeedsAggregator.config;
 
 import org.apereo.portal.soffit.security.SoffitApiAuthenticationManager;
 import org.apereo.portal.soffit.security.SoffitApiPreAuthenticatedProcessingFilter;

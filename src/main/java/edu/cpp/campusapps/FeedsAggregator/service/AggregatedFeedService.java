@@ -2,9 +2,9 @@ package edu.cpp.campusapps.FeedsAggregator.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.rometools.rome.feed.synd.*;
-import edu.cpp.campusapps.FeedsAggregator.util.Category;
-import edu.cpp.campusapps.FeedsAggregator.util.AggregatedFeedProperties;
-import edu.cpp.campusapps.FeedsAggregator.util.CategoriesProperties;
+import edu.cpp.campusapps.FeedsAggregator.properties.Category;
+import edu.cpp.campusapps.FeedsAggregator.properties.AggregatedFeedProperties;
+import edu.cpp.campusapps.FeedsAggregator.properties.CategoriesProperties;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
