@@ -1,28 +1,27 @@
 package edu.cpp.campusapps.FeedsAggregator.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.rometools.rome.feed.synd.*;
-import edu.cpp.campusapps.FeedsAggregator.properties.Category;
+import com.rometools.rome.feed.synd.SyndEnclosure;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.feed.synd.SyndFeedImpl;
+import edu.cpp.campusapps.FeedsAggregator.dao.uPortalGroupDao;
 import edu.cpp.campusapps.FeedsAggregator.properties.AggregatedFeedProperties;
 import edu.cpp.campusapps.FeedsAggregator.properties.CategoriesProperties;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
-import javax.activation.MimetypesFileTypeMap;
-import javax.servlet.http.HttpServletRequest;
-
+import edu.cpp.campusapps.FeedsAggregator.properties.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 public class AggregatedFeedService {
@@ -37,6 +36,9 @@ public class AggregatedFeedService {
 
     @Autowired
     private FeedService service;
+
+    @Autowired
+    private uPortalGroupDao groupDao;
 
     @Value("${maxAge:4}")
     private long maxAge;
@@ -53,24 +55,7 @@ public class AggregatedFeedService {
     public SyndFeed aggregateFeedsByGroups(HttpServletRequest request) throws Exception {
         String oidc = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, oidc);
-
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-
-        ResponseEntity<JsonNode> groupsApiResponse = restTemplate.exchange(portalBaseUrl + "/api/groups", HttpMethod.GET, entity, JsonNode.class);
-
-        JsonNode groupsNode = groupsApiResponse.getBody().get("groups");
-
-        List<String> groups = new ArrayList<>();
-
-        if (groupsNode.isArray()) {
-            for (JsonNode group : groupsNode) {
-                groups.add(group.get("name").textValue());
-            }
-        }
+        List<String> groups = this.groupDao.getGroups(oidc);
 
         List<String> categories = new ArrayList<>();
         categories.add("general");
