@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
-public class AggregatedFeedController {
+@RequestMapping("api/v0")
+public class AggregatedFeedControllerV0 {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
