@@ -27,7 +27,7 @@ public class CacheControllerV0 {
 
         CacheControllerV0Response apiResponse = new CacheControllerV0Response();
 
-        if (!this.service.evictFeed(feedUrl)) {
+        if (!this.service.evictFeed(request)) {
             apiResponse.setStatus(500);
             apiResponse.setMessage(String.format("Failed to remove %s from cache", feedUrl));
 

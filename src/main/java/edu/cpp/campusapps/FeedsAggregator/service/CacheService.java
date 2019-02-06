@@ -1,15 +1,20 @@
 package edu.cpp.campusapps.FeedsAggregator.service;
 
+import edu.cpp.campusapps.FeedsAggregator.dao.uPortalGroupsDao;
 import edu.cpp.campusapps.FeedsAggregator.model.CacheControllerV0Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class CacheService {
@@ -19,13 +24,44 @@ public class CacheService {
     @Autowired
     private CacheManager cacheManager;
 
-    public boolean evictFeed(HttpServletRequest request) {
-        String oidc = request.getHeader(HttpHeaders.AUTHORIZATION);
+    @Autowired
+    private uPortalGroupsDao groupsDao;
 
-        return false;
+    @Value("${edu.cpp.mobwebapps.FeedsAggregator.managementGroups}")
+    private String managementGroupsParameter;
+
+    public boolean evictFeed(HttpServletRequest request) {
+        List<String> groups = groupsDao.getGroups(request);
+
+        boolean canEvict = false;
+
+        for(String group : groups) {
+            for(String requisiteGroup : managementGroupsParameter.split(",")) {
+                if (requisiteGroup.equals(group)) {
+                    canEvict = true;
+
+                    break;
+                }
+            }
+
+            if (canEvict) {
+                break;
+            }
+        }
+
+        if (!canEvict) {
+            final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            logger.error("{} is not authorized to evict feed from cache", authentication.getPrincipal());
+
+            return false;
+        }
+
+        String feedUrl = request.getParameter("feed");
+
+        return this.evictFeed(feedUrl);
     }
 
-    public boolean evictFeed(String feedUrl) {
+    private boolean evictFeed(String feedUrl) {
         Cache<String, Object> cache = cacheManager.getCache("feeds");
 
         CacheControllerV0Response response = new CacheControllerV0Response();
