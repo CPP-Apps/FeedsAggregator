@@ -4,7 +4,7 @@ import com.rometools.rome.feed.synd.SyndEnclosure;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
-import edu.cpp.campusapps.FeedsAggregator.dao.uPortalGroupDao;
+import edu.cpp.campusapps.FeedsAggregator.dao.uPortalGroupsDao;
 import edu.cpp.campusapps.FeedsAggregator.properties.AggregatedFeedProperties;
 import edu.cpp.campusapps.FeedsAggregator.properties.CategoriesProperties;
 import edu.cpp.campusapps.FeedsAggregator.properties.Category;
@@ -38,7 +38,7 @@ public class AggregatedFeedService {
     private FeedService service;
 
     @Autowired
-    private uPortalGroupDao groupDao;
+    private uPortalGroupsDao groupDao;
 
     @Value("${maxAge:4}")
     private long maxAge;

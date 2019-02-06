@@ -11,15 +11,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class uPortalGroupDao {
+public class uPortalGroupsDao {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${portalBaseUrl:http://localhost:8080/uPortal}")
     private String portalBaseUrl;
+
+    public List<String> getGroups(HttpServletRequest request) {
+        String oidc = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        return this.getGroups(oidc);
+    }
 
     public List<String> getGroups(String oidc) {
         RestTemplate restTemplate = new RestTemplate();
