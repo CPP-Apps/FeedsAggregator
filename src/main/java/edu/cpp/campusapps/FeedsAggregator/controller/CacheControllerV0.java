@@ -30,14 +30,13 @@ public class CacheControllerV0 {
         if (!this.service.evictFeed(request)) {
             apiResponse.setStatus(500);
             apiResponse.setMessage(String.format("Failed to remove %s from cache", feedUrl));
-
-            response.setStatus(500);
-
-            return apiResponse;
+        }
+        else {
+            apiResponse.setStatus(200);
+            apiResponse.setMessage(String.format("Removed %s from cache", feedUrl));
         }
 
-        apiResponse.setStatus(200);
-        apiResponse.setMessage(String.format("Removed %s from cache", feedUrl));
+        response.setStatus(apiResponse.getStatus());
 
         return apiResponse;
     }
