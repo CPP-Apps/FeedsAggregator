@@ -128,7 +128,7 @@ public class AggregatedFeedService {
             List<String> feedUrls = categoriesProperties.getCategories().get(category).getFeeds();
 
             for (String feedUrl : feedUrls) {
-                List<SyndEntry> feedEntries = this.service.fetch(feedUrl);
+                List<SyndEntry> feedEntries = this.service.get(feedUrl);
 
                 for (SyndEntry entry : feedEntries) {
                     boolean addEntry = true;

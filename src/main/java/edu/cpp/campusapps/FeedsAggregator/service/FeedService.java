@@ -23,6 +23,10 @@ public class FeedService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @CacheResult(cacheName = "feeds")
+    public List<SyndEntry> get(String url) throws Exception {
+        return this.fetch(url);
+    }
+
     public List<SyndEntry> fetch(String url) throws Exception {
         this.logger.debug("Fetching " + url);
 
