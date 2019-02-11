@@ -1,9 +1,6 @@
 pipeline {
     agent {
-        docker {
-            label 'docker-agent'
-            image 'openjdk:8-jdk-slim'
-        }
+        docker { image 'openjdk:8-jdk-slim' }
     }
 
     stages {
