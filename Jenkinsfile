@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './gradlew --no-daemon assemble'
+                sh './gradlew assemble'
             }
         }
         stage('Archive Artifacts') {
