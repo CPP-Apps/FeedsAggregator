@@ -149,6 +149,10 @@ public class AggregatedFeedService {
 
                     if (addEntry) {
                         for (SyndEnclosure enclosure : entry.getEnclosures()) {
+                            if (enclosure.getUrl().trim().isEmpty()) {
+                                continue;
+                            }
+
                             if (enclosure.getType() != null && !enclosure.getType().isEmpty()) {
                                 continue;
                             }
