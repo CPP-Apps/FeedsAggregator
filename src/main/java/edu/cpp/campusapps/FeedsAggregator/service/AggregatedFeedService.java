@@ -43,6 +43,9 @@ public class AggregatedFeedService {
     @Value("${maxAge:4}")
     private long maxAge;
 
+    @Value("${fallbackImage:}")
+    private String fallbackImage;
+
     private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
     @Value("${portalBaseUrl:http://localhost:8080/uPortal}")
@@ -148,9 +151,16 @@ public class AggregatedFeedService {
                     }
 
                     if (addEntry) {
+                        boolean hasValidEnclosure = false;
+
                         for (SyndEnclosure enclosure : entry.getEnclosures()) {
                             if (enclosure.getUrl().trim().isEmpty()) {
-                                continue;
+                                if (!this.fallbackImage.isEmpty()) {
+                                    enclosure.setUrl(this.fallbackImage);
+                                }
+                                else {
+                                    continue;
+                                }
                             }
 
                             if (enclosure.getType() != null && !enclosure.getType().isEmpty()) {
