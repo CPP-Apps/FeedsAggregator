@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -46,10 +47,15 @@ public class AggregatedFeedService {
     @Value("${fallbackImage:}")
     private String fallbackImage;
 
-    private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
+    private MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
     @Value("${portalBaseUrl:http://localhost:8080/uPortal}")
     private String portalBaseUrl;
+
+    @PostConstruct
+    public void init() {
+        this.fileTypeMap.addMimeTypes("image/png png");
+    }
 
     /**
      * aggregateFeedsByGroups determines the user's groups from uPortal and
