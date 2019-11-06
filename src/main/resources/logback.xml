@@ -25,6 +25,7 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/${CONTEXT_NAME}.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>28</maxHistory>
         </rollingPolicy>
     </appender>
 
