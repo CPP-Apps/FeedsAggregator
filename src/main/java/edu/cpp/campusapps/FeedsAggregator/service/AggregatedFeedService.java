@@ -173,6 +173,10 @@ public class AggregatedFeedService {
                                 continue;
                             }
 
+                            // This is making a broad assumption that the images are available on an https endpoint
+                            String enclosureUrl = enclosure.getUrl().replace("http://", "https://");
+                            enclosure.setUrl(enclosureUrl);
+
                             // TODO: Improve file type checking
                             String extension =
                                     enclosure
