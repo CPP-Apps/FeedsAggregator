@@ -29,6 +29,7 @@ dependencies {
     compile "org.apache.httpcomponents:httpclient:${httpclientVersion}"
     compile "org.jasig.portal:uPortal-soffit-renderer:${uPortalVersion}"
     compile "org.springframework.boot:spring-boot-starter-cache"
+    compile "org.springframework.boot:spring-boot-starter-quartz"
     compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.boot:spring-boot-starter-web"
 
