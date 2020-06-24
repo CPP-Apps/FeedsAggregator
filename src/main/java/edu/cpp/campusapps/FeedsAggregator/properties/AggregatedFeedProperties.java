@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "aggregratedFeed")
+@ConfigurationProperties(prefix = "aggregrated-feed")
 public class AggregatedFeedProperties {
 
     private String type;
