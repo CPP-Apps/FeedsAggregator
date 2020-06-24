@@ -4,7 +4,7 @@ import org.apereo.portal.soffit.security.SoffitApiAuthenticationManager;
 import org.apereo.portal.soffit.security.SoffitApiPreAuthenticatedProcessingFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.support.ErrorPageFilter;
+import org.springframework.boot.web.servlet.support.ErrorPageFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -75,23 +75,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManager() {
         return new SoffitApiAuthenticationManager();
-    }
-
-    @Bean
-    public ErrorPageFilter errorPageFilter() {
-        return new ErrorPageFilter();
-    }
-
-    @Bean
-    public FilterRegistrationBean disableSpringBootErrorFilter() {
-        /*
-         * The ErrorPageFilter (Spring) makes extra calls to HttpServletResponse.flushBuffer(),
-         * and this behavior produces many warnings in the portal logs during portlet requests.
-         */
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-        filterRegistrationBean.setFilter(errorPageFilter());
-        filterRegistrationBean.setEnabled(false);
-        return filterRegistrationBean;
     }
 
 }
