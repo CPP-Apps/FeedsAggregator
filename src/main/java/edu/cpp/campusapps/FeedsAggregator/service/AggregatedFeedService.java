@@ -134,6 +134,13 @@ public class AggregatedFeedService {
                                 .toInstant());
 
         for (String category : categories) {
+            Category feedCategory = categoriesProperties.getCategories().get(category);
+
+            if (feedCategory == null) {
+                logger.warn("Feed category \"{}\" does not exist", category);
+                continue;
+            }
+
             List<String> feedUrls = categoriesProperties.getCategories().get(category).getFeeds();
 
             for (String feedUrl : feedUrls) {
