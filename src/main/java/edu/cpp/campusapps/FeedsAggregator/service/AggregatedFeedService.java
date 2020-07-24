@@ -4,10 +4,12 @@ import com.rometools.rome.feed.synd.SyndEnclosure;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
+
 import edu.cpp.campusapps.FeedsAggregator.dao.uPortalGroupsDao;
 import edu.cpp.campusapps.FeedsAggregator.properties.AggregatedFeedProperties;
 import edu.cpp.campusapps.FeedsAggregator.properties.CategoriesProperties;
 import edu.cpp.campusapps.FeedsAggregator.properties.Category;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.activation.MimetypesFileTypeMap;
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+
+import javax.activation.MimetypesFileTypeMap;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class AggregatedFeedService {
@@ -58,8 +61,8 @@ public class AggregatedFeedService {
     }
 
     /**
-     * aggregateFeedsByGroups determines the user's groups from uPortal and
-     * adds the appropriate feed categories for aggregation.
+     * aggregateFeedsByGroups determines the user's groups from uPortal and adds the appropriate
+     * feed categories for aggregation.
      */
     public SyndFeed aggregateFeedsByGroups(HttpServletRequest request) throws Exception {
         String oidc = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -78,7 +81,9 @@ public class AggregatedFeedService {
             Category category = (Category) pair.getValue();
 
             for (String group : groups) {
-                boolean addCategory = category.getGroups().stream().anyMatch(requisiteGroup -> group.equals(requisiteGroup));
+                boolean addCategory =
+                        category.getGroups().stream()
+                                .anyMatch(requisiteGroup -> group.equals(requisiteGroup));
 
                 if (addCategory && !categories.contains(categoryName)) {
                     categories.add(categoryName);
@@ -86,7 +91,7 @@ public class AggregatedFeedService {
             }
         }
 
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
             logger.debug("Determined the following categories for {}: ", auth.getPrincipal());
@@ -170,8 +175,7 @@ public class AggregatedFeedService {
                             if (enclosure.getUrl().trim().isEmpty()) {
                                 if (!this.fallbackImage.isEmpty()) {
                                     enclosure.setUrl(this.fallbackImage);
-                                }
-                                else {
+                                } else {
                                     continue;
                                 }
                             }
@@ -180,7 +184,8 @@ public class AggregatedFeedService {
                                 continue;
                             }
 
-                            // This is making a broad assumption that the images are available on an https endpoint
+                            // This is making a broad assumption that the images are available on an
+                            // https endpoint
                             String enclosureUrl = enclosure.getUrl().replace("http://", "https://");
                             enclosure.setUrl(enclosureUrl);
 
@@ -197,8 +202,8 @@ public class AggregatedFeedService {
                     }
                 }
 
-                // IntelliJ IDEA wants to replace this with a Comparator.comparing, but it's probably best to leave it
-                // as is for now
+                // IntelliJ IDEA wants to replace this with a Comparator.comparing, but it's
+                // probably best to leave it as is for now
                 Collections.sort(
                         entries,
                         (SyndEntry e1, SyndEntry e2) ->

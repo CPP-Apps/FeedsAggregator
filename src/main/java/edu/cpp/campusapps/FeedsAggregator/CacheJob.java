@@ -1,9 +1,11 @@
 package edu.cpp.campusapps.FeedsAggregator;
 
 import com.rometools.rome.feed.synd.SyndEntry;
+
 import edu.cpp.campusapps.FeedsAggregator.properties.CategoriesProperties;
 import edu.cpp.campusapps.FeedsAggregator.properties.Category;
 import edu.cpp.campusapps.FeedsAggregator.service.FeedService;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -35,7 +37,8 @@ public class CacheJob implements Job {
 
         Instant startTime = Instant.now();
 
-        for (Map.Entry<String, Category> feedCategory : this.categoriesProperties.getCategories().entrySet()) {
+        for (Map.Entry<String, Category> feedCategory :
+                this.categoriesProperties.getCategories().entrySet()) {
             logger.info("Caching RSS feeds for category = {}", feedCategory.getKey());
 
             for (String feedUrl : feedCategory.getValue().getFeeds()) {
@@ -61,7 +64,10 @@ public class CacheJob implements Job {
 
         Instant endTime = Instant.now();
 
-        logger.info("Cached {} RSS feed(s) with {} entries in {} seconds", feeds, entries, Duration.between(startTime, endTime).getSeconds());
+        logger.info(
+                "Cached {} RSS feed(s) with {} entries in {} seconds",
+                feeds,
+                entries,
+                Duration.between(startTime, endTime).getSeconds());
     }
-
 }

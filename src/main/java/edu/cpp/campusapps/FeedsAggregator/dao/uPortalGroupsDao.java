@@ -1,6 +1,7 @@
 package edu.cpp.campusapps.FeedsAggregator.dao;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Repository
 public class uPortalGroupsDao {
@@ -36,7 +38,9 @@ public class uPortalGroupsDao {
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        ResponseEntity<JsonNode> groupsApiResponse = restTemplate.exchange(portalBaseUrl + "/api/groups", HttpMethod.GET, entity, JsonNode.class);
+        ResponseEntity<JsonNode> groupsApiResponse =
+                restTemplate.exchange(
+                        portalBaseUrl + "/api/groups", HttpMethod.GET, entity, JsonNode.class);
 
         JsonNode groupsNode = groupsApiResponse.getBody().get("groups");
 

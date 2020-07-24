@@ -10,9 +10,11 @@ import org.springframework.context.annotation.PropertySources;
 
 @SpringBootApplication
 @PropertySources({
-        @PropertySource(value = "classpath:feeds-aggregator.properties"),
-        @PropertySource(value = "file:${portal.home}/global.properties", ignoreResourceNotFound = true),
-        @PropertySource(value = "file:${portal.home}/feeds-aggregator.properties", ignoreResourceNotFound = true),
+    @PropertySource(value = "classpath:feeds-aggregator.properties"),
+    @PropertySource(value = "file:${portal.home}/global.properties", ignoreResourceNotFound = true),
+    @PropertySource(
+            value = "file:${portal.home}/feeds-aggregator.properties",
+            ignoreResourceNotFound = true),
 })
 @EnableCaching
 public class Application extends SpringBootServletInitializer {

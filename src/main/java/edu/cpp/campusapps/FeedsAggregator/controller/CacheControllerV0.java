@@ -2,6 +2,7 @@ package edu.cpp.campusapps.FeedsAggregator.controller;
 
 import edu.cpp.campusapps.FeedsAggregator.model.CacheControllerV0Response;
 import edu.cpp.campusapps.FeedsAggregator.service.CacheService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class CacheControllerV0 {
     private CacheService service;
 
     @RequestMapping(method = RequestMethod.DELETE, produces = "application/json")
-    public CacheControllerV0Response evictFeed(HttpServletRequest request, HttpServletResponse response) {
+    public CacheControllerV0Response evictFeed(
+            HttpServletRequest request, HttpServletResponse response) {
         String feedUrl = request.getParameter("feed");
 
         CacheControllerV0Response apiResponse = new CacheControllerV0Response();
@@ -30,8 +32,7 @@ public class CacheControllerV0 {
         if (!this.service.evictFeed(request)) {
             apiResponse.setStatus(500);
             apiResponse.setMessage(String.format("Failed to remove %s from cache", feedUrl));
-        }
-        else {
+        } else {
             apiResponse.setStatus(200);
             apiResponse.setMessage(String.format("Removed %s from cache", feedUrl));
         }
