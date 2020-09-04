@@ -17,7 +17,7 @@
     <!-- Templates -->
     <cache-template name="standardTemplate">
         <expiry>
-            <ttl unit="minutes">60</ttl>
+            <ttl unit="minutes">90</ttl>
         </expiry>
         <heap unit="entries">1000</heap>
     </cache-template>
