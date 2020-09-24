@@ -1,21 +1,21 @@
-image: openjdk:8-jdk-stretch
+definitions:
+  steps:
+  - step: &build-war
+      image: openjdk:8
+      caches:
+        - gradle
+      script:
+        - umask 0022
+        - ./gradlew assemble
 
 pipelines:
   default:
-    - step:
-        caches:
-          - gradle
-        script:
-          - ./gradlew assemble
-        artifacts:
-          - build/libs/*.war
+    - step: *build-war
   tags:
     '*':
+      - step: *build-war
       - step:
-          caches:
-            - gradle
           script:
-            - ./gradlew assemble
             - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"`find build/libs -name '*.war'`"
           artifacts:
             - build/libs/*.war
