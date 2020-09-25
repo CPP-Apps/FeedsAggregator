@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'edu.cpp.campusapps'
-version '0.5.1-SNAPSHOT'
+version '0.5.1'
 
 sourceCompatibility = 1.8
 
