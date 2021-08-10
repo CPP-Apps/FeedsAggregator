@@ -41,7 +41,13 @@ public class FeedService {
             feedCache.put(url, feedEntries);
         } catch (Exception e) {
             logger.error("Unable to cache RSS feed: {}", url);
-            e.printStackTrace();
+            logger.error(e.getMessage());
+
+            if (logger.isDebugEnabled()) {
+                for (StackTraceElement ste : e.getStackTrace()) {
+                    logger.error(ste.toString());
+                }
+            }
         }
 
         return feedEntries;

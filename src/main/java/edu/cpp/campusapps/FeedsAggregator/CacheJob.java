@@ -42,16 +42,11 @@ public class CacheJob implements Job {
             logger.info("Caching RSS feeds for category = {}", feedCategory.getKey());
 
             for (String feedUrl : feedCategory.getValue().getFeeds()) {
-                List<SyndEntry> rssFeed = null;
-
-                try {
-                    rssFeed = this.feedService.cache(feedUrl);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                List<SyndEntry> rssFeed = this.feedService.cache(feedUrl);
 
                 if (rssFeed == null) {
                     logger.error("Failed to get RSS feed: {}", feedUrl);
+                    continue;
                 }
 
                 feeds++;
