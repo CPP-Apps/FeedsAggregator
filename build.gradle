@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.16.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'war'
+    id 'org.springframework.boot' version '2.1.16.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
 group 'edu.cpp.campusapps'
@@ -36,8 +36,6 @@ dependencies {
     runtime "org.codehaus.janino:janino:${janinoVersion}"
     runtime "org.ehcache:ehcache:${ehcacheVersion}"
     providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
-
-    testCompile "junit:junit:4.1.2"
 }
 
 jar {
