@@ -17,5 +17,8 @@ pipelines:
     '*':
       - step: *build-war
       - step:
+          image: openjdk:8
+          caches:
+            - gradle
           script:
-            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"`find build/libs -name '*.war'`"
+            - USERNAME=billybronco TOKEN=$GH_PR_TOKEN ./gradlew publish

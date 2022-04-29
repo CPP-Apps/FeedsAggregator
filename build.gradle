@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     id 'war'
     id 'org.springframework.boot' version '2.1.16.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -40,4 +41,23 @@ dependencies {
 
 jar {
     enabled = true
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/CPP-Apps/FeedsAggregator")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+			artifactId = 'feedsaggregator'
+            artifact(tasks.named("bootWar"))
+        }
+    }
 }
