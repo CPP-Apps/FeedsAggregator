@@ -21,4 +21,4 @@ pipelines:
           caches:
             - gradle
           script:
-            - USERNAME=billybronco TOKEN=$GH_PR_TOKEN ./gradlew publish
+            - USERNAME=$GH_PR_USER TOKEN=$GH_PR_TOKEN ./gradlew publish
